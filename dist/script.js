@@ -984,9 +984,13 @@ function () {
 
       this.btns.forEach(function (btn) {
         btn.addEventListener('click', function () {
-          var path = btn.getAttribute('data-url');
+          if (document.querySelector('iframe#frame')) {
+            _this.overlay.style.display = 'flex';
+          } else {
+            var path = btn.getAttribute('data-url');
 
-          _this.createPlayer(path);
+            _this.createPlayer(path);
+          }
         });
       });
     }
