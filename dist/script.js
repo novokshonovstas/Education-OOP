@@ -932,11 +932,14 @@ module.exports = g;
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_slider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/slider */ "./src/js/modules/slider.js");
 /* harmony import */ var _modules_playVideo__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/playVideo */ "./src/js/modules/playVideo.js");
+// import Slider from "./modules/slider";
 
 
-window.addEventListener('DOMContentLoaded', function () {
-  var slider = new _modules_slider__WEBPACK_IMPORTED_MODULE_0__["default"]('.page', '.next');
-  slider.render();
+window.addEventListener("DOMContentLoaded", function () {
+  //slider
+  var slider = new _modules_slider__WEBPACK_IMPORTED_MODULE_0__["default"](".page", ".next");
+  slider.render(); //player
+
   var player = new _modules_playVideo__WEBPACK_IMPORTED_MODULE_1__["default"]('.showup .play', '.overlay');
   player.init();
 });
@@ -952,7 +955,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return VideoPLayer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return VideoPlayer; });
 /* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
 /* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
 
@@ -963,37 +966,27 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var VideoPLayer =
+var VideoPlayer =
 /*#__PURE__*/
 function () {
-  function VideoPLayer(triggers, overlay) {
-    _classCallCheck(this, VideoPLayer);
+  function VideoPlayer(triggers, overlay) {
+    _classCallCheck(this, VideoPlayer);
 
     this.btns = document.querySelectorAll(triggers);
     this.overlay = document.querySelector(overlay);
     this.close = this.overlay.querySelector('.close');
   }
 
-  _createClass(VideoPLayer, [{
+  _createClass(VideoPlayer, [{
     key: "bindTriggers",
     value: function bindTriggers() {
       var _this = this;
 
-      // при клике на кнопку play
       this.btns.forEach(function (btn) {
         btn.addEventListener('click', function () {
-          _this.overlay.classList.add('animated', 'fadeIn'); // если на странице уже есть плеер то мы его отображаем, а не создаем новый при клике
+          var path = btn.getAttribute('data-url');
 
-
-          if (document.querySelector('iframe#frame')) {
-            // меняем с модалки display = 'none' на display = 'flex, таким образом отображаем ее
-            _this.overlay.style.display = 'flex';
-          } else {
-            // получаем id видео с youtube который назначен на кнопку в виде аттрибута
-            _this.path = btn.getAttribute('data-url'); // вызываем функцию создания плеера в качестве аргумента будет path
-
-            _this.createPayer(_this.path);
-          }
+          _this.createPlayer(path);
         });
       });
     }
@@ -1007,37 +1000,31 @@ function () {
 
         _this2.player.stopVideo();
       });
-    } // функция создания плеера по шаблону youtube api, принимает url видео
-
+    }
   }, {
-    key: "createPayer",
-    value: function createPayer(url) {
+    key: "createPlayer",
+    value: function createPlayer(url) {
       this.player = new YT.Player('frame', {
         height: '100%',
         width: '100%',
         videoId: "".concat(url)
-      }); // выведем в консоль объект плеера youtube api
-
+      });
       console.log(this.player);
+      this.overlay.style.display = 'flex';
     }
   }, {
     key: "init",
     value: function init() {
-      //создаем тег скрипт
-      var tag = document.createElement('script'); // назначем ему src youtube API
-
-      tag.src = "https://www.youtube.com/iframe_api"; // находим первый скрипт на странице - главный скрипт
-
-      var firstScriptTag = document.getElementsByTagName('script')[0]; //  находим родителя скрипта - тег body и вставляем наш скрипт youtube api до основного скрипта
-
-      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag); // вызываем функцию клика на кнопку плей и создания плеера в модальном окне
-
+      var tag = document.createElement('script');
+      tag.src = 'https://www.youtube.com/iframe_api';
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
       this.bindTriggers();
       this.bindCloseBtn();
     }
   }]);
 
-  return VideoPLayer;
+  return VideoPlayer;
 }();
 
 
@@ -1081,16 +1068,22 @@ function () {
     value: function showSlides(n) {
       var _this = this;
 
+      // если n больше длины слайдов (мы дошли до конца слайдов - перейти в начало)
       if (n > this.slides.length) {
         this.slideIndex = 1;
-      }
+      } // если n меньше длины слайдов (мы дошли до начала слайдов - перейти в конец)
+
 
       if (n < 1) {
         this.slideIndex = this.slides.length;
-      }
+      } // изначально скрываем блок hanson
+      // оборачиваем в try/catch если такого блока нет, а его не будет до 3 страницы, то код не сломается
+
 
       try {
         this.hanson.style.opacity = '0';
+        /* если мы на третем слайде то через 3с показываем блок hanson, добавляем анимацию, 
+        после ухода на другой слайд - убираем*/
 
         if (n === 3) {
           this.hanson.classList.add('animated');
@@ -1102,13 +1095,16 @@ function () {
         } else {
           this.hanson.classList.remove('slideInUp');
         }
-      } catch (e) {}
+      } catch (e) {} //скрываем все слайды
+
 
       this.slides.forEach(function (slide) {
-        slide.style.display = "none";
-      });
-      this.slides[this.slideIndex - 1].style.display = "block";
-    }
+        slide.style.display = 'none';
+      }); // показываем первый слайд
+
+      this.slides[this.slideIndex - 1].style.display = 'block';
+    } // функция для переключения слайдов, внутри вызваем функицю инициализации this.showslides и в виде аргумента будет смещать индекс на 1
+
   }, {
     key: "plusSlides",
     value: function plusSlides(n) {
@@ -1119,24 +1115,30 @@ function () {
     value: function render() {
       var _this2 = this;
 
+      // получаем вспылвающее окно, оборачиваем в try/catch потому что блок на 3 странице
       try {
         this.hanson = document.querySelector('.hanson');
       } catch (e) {}
+      /* перебираем все кнопки, при клике на каждую вызываем функцию переключения слайда plusSlides с аргументом 1, 
+      то есть слайд смещается на 1 вперед */
+
 
       this.btns.forEach(function (btn) {
         btn.addEventListener("click", function () {
+          // аргумент 1 будет смещать индекс слайдов при клике на единицу вперед
           _this2.plusSlides(1);
-
-          btn.parentNode.previousElementSibling.addEventListener('click', function (e) {
-            e.preventDefault();
-            _this2.slideIndex = 1;
-
-            _this2.showSlides(_this2.slideIndex);
-          });
         });
+        /* при переборе всех кнопок получаем родителя у кнопок и у родителя предыдущий элемент (это ссылка), 
+        при клике на него отменяем стандарт. поведение и вызываем функцию показа первого слайда */
 
-        _this2.showSlides(_this2.slideIndex);
+        btn.parentNode.previousElementSibling.addEventListener('click', function (e) {
+          e.preventDefault();
+          _this2.slideIndex = 1;
+
+          _this2.showSlides(_this2.slideIndex);
+        });
       });
+      this.showSlides(this.slideIndex);
     }
   }]);
 
