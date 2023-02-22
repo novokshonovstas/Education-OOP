@@ -1683,6 +1683,7 @@ a:active {
   display: flex;
   justify-content: center;
   height: 48px;
+  cursor: pointer;
 }
 .module__info-book .download svg {
   -webkit-transform: translateY(2px);

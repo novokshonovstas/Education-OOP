@@ -4941,6 +4941,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_playVideo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/playVideo */ "./src/js/modules/playVideo.js");
 /* harmony import */ var _modules_diference__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/diference */ "./src/js/modules/diference.js");
 /* harmony import */ var _modules_form__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/form */ "./src/js/modules/form.js");
+/* harmony import */ var _modules_showInfo__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/showInfo */ "./src/js/modules/showInfo.js");
+/* harmony import */ var _modules_slider_download__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/slider/download */ "./src/js/modules/slider/download.js");
+
+
 
 
 
@@ -4992,7 +4996,11 @@ window.addEventListener("DOMContentLoaded", function () {
     container: '.moduleapp',
     btns: '.next'
   });
-  modulePageSlider.render();
+  modulePageSlider.render(); // Show Info
+
+  new _modules_showInfo__WEBPACK_IMPORTED_MODULE_5__["default"]('.plus__content').init(); // Download
+
+  new _modules_slider_download__WEBPACK_IMPORTED_MODULE_6__["default"]('.download').init();
 });
 
 /***/ }),
@@ -5353,6 +5361,162 @@ function () {
   }]);
 
   return VideoPlayer;
+}();
+
+
+
+/***/ }),
+
+/***/ "./src/js/modules/showInfo.js":
+/*!************************************!*\
+  !*** ./src/js/modules/showInfo.js ***!
+  \************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ShowInfo; });
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var ShowInfo =
+/*#__PURE__*/
+function () {
+  function ShowInfo(triggers) {
+    _classCallCheck(this, ShowInfo);
+
+    this.btn = document.querySelectorAll(triggers);
+    this.btnPlus = document.querySelectorAll(".plus__green");
+    this.btnMinus = document.querySelectorAll(".minus__red");
+    this.infoBlock = document.querySelectorAll(".module__info-book");
+  }
+
+  _createClass(ShowInfo, [{
+    key: "hideTriggers",
+    value: function hideTriggers() {
+      this.btnPlus.forEach(function (item) {
+        item.style.display = "none";
+      });
+      this.btnMinus.forEach(function (item) {
+        item.style.display = "block";
+      });
+      this.infoBlock.forEach(function (item) {
+        item.classList.add("animated", "fadeInDown");
+      });
+    }
+  }, {
+    key: "showTriggers",
+    value: function showTriggers() {
+      this.btnPlus.forEach(function (item) {
+        item.style.display = "block";
+      });
+      this.btnMinus.forEach(function (item) {
+        item.style.display = "none";
+      });
+      this.infoBlock.forEach(function (item) {
+        item.classList.remove("animated", "fadeInDown");
+      });
+    }
+  }, {
+    key: "init",
+    value: function init() {
+      var _this = this;
+
+      this.btnMinus.forEach(function (item) {
+        item.style.display = "none";
+      });
+      this.btn.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var sibling = btn.closest(".module__info-show").nextElementSibling;
+          sibling.classList.add("animated", "fadeInDown");
+          sibling.classList.toggle("msg");
+          sibling.style.marginTop = "20px";
+
+          if (!sibling.matches(".msg")) {
+            _this.hideTriggers();
+
+            btn.style.background = "#e83434";
+          } else {
+            _this.showTriggers();
+
+            btn.style.background = "";
+            sibling.classList.remove("animated", "fadeInDown");
+          }
+        });
+      });
+    }
+  }]);
+
+  return ShowInfo;
+}();
+
+
+
+/***/ }),
+
+/***/ "./src/js/modules/slider/download.js":
+/*!*******************************************!*\
+  !*** ./src/js/modules/slider/download.js ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Download; });
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Download =
+/*#__PURE__*/
+function () {
+  function Download(triggers) {
+    _classCallCheck(this, Download);
+
+    this.btns = document.querySelectorAll(triggers);
+    this.path = 'assets/img/mainbg.jpg';
+  }
+
+  _createClass(Download, [{
+    key: "dowloadItem",
+    value: function dowloadItem(path) {
+      var elem = document.createElement('a');
+      elem.setAttribute('href', path);
+      elem.setAttribute('download', 'nice_picture');
+      elem.style.display = 'none';
+      document.body.appendChild(elem);
+      elem.click();
+      document.body.removeChild(elem);
+    }
+  }, {
+    key: "init",
+    value: function init() {
+      var _this = this;
+
+      this.btns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          _this.dowloadItem(_this.path);
+        });
+      });
+    }
+  }]);
+
+  return Download;
 }();
 
 
