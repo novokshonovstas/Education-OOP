@@ -5430,28 +5430,30 @@ function () {
     value: function init() {
       var _this = this;
 
-      this.btnMinus.forEach(function (item) {
-        item.style.display = "none";
-      });
-      this.btn.forEach(function (btn) {
-        btn.addEventListener("click", function () {
-          var sibling = btn.closest(".module__info-show").nextElementSibling;
-          sibling.classList.add("animated", "fadeInDown");
-          sibling.classList.toggle("msg");
-          sibling.style.marginTop = "20px";
-
-          if (!sibling.matches(".msg")) {
-            _this.hideTriggers();
-
-            btn.style.background = "#e83434";
-          } else {
-            _this.showTriggers();
-
-            btn.style.background = "";
-            sibling.classList.remove("animated", "fadeInDown");
-          }
+      try {
+        this.btnMinus.forEach(function (item) {
+          item.style.display = "none";
         });
-      });
+        this.btn.forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            var sibling = btn.closest(".module__info-show").nextElementSibling;
+            sibling.classList.add("animated", "fadeInDown");
+            sibling.classList.toggle("msg");
+            sibling.style.marginTop = "20px";
+
+            if (!sibling.matches(".msg")) {
+              _this.hideTriggers();
+
+              btn.style.background = "#e83434";
+            } else {
+              _this.showTriggers();
+
+              btn.style.background = "";
+              sibling.classList.remove("animated", "fadeInDown");
+            }
+          });
+        });
+      } catch (error) {}
     }
   }]);
 

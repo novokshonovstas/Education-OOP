@@ -63,7 +63,7 @@ feedSlider.init();
   new ShowInfo('.plus__content').init();
 
   // Download
-
   new Download('.download').init();
+
 
 });

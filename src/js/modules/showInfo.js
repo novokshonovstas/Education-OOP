@@ -35,29 +35,35 @@ export default class ShowInfo {
   }
 
   init() {
-    this.btnMinus.forEach((item) => {
-      item.style.display = "none";
-    });
 
-    this.btn.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const sibling = btn.closest(".module__info-show").nextElementSibling;
-        sibling.classList.add("animated", "fadeInDown");
-        
-
-        sibling.classList.toggle("msg");
-        sibling.style.marginTop = "20px";
-
-        if(!sibling.matches(".msg")) {
-          this.hideTriggers();
-
-          btn.style.background = "#e83434";
-        } else {
-          this.showTriggers();
-          btn.style.background = "";
-          sibling.classList.remove("animated", "fadeInDown");
-        }
+    try {
+      this.btnMinus.forEach((item) => {
+        item.style.display = "none";
       });
-    });
+  
+      this.btn.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const sibling = btn.closest(".module__info-show").nextElementSibling;
+          sibling.classList.add("animated", "fadeInDown");
+          
+  
+          sibling.classList.toggle("msg");
+          sibling.style.marginTop = "20px";
+  
+          if(!sibling.matches(".msg")) {
+            this.hideTriggers();
+  
+            btn.style.background = "#e83434";
+          } else {
+            this.showTriggers();
+            btn.style.background = "";
+            sibling.classList.remove("animated", "fadeInDown");
+          }
+        });
+      });
+    } catch (error) {
+      
+    }
+   
   }
 }
